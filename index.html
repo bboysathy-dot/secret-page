@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Accès sécurisé</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            background: url("background.jpg") no-repeat center center fixed;
+            background-size: contain;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Flou */
+        .overlay {
+            position: absolute;
+            inset: 0;
+            backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .box {
+            position: relative;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            color: white;
+            width: 260px;
+            z-index: 1;
+        }
+
+        .display {
+            font-size: 28px;
+            letter-spacing: 8px;
+            background: #111;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            font-size: 20px;
+            padding: 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .num { background: #444; color: white; }
+        .num:hover { background: #666; }
+
+        .action { background: #00cc88; color: black; }
+        .delete { background: #cc4444; color: white; }
+
+        #error {
+            margin-top: 15px;
+            color: #ff8080;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <div class="box">
+        <h2>Code à 4 chiffres</h2>
+
+        <div class="display" id="display">----</div>
+
+        <div class="keypad">
+            <button class="num" onclick="addDigit(1)">1</button>
+            <button class="num" onclick="addDigit(2)">2</button>
+            <button class="num" onclick="addDigit(3)">3</button>
+
+            <button class="num" onclick="addDigit(4)">4</button>
+            <button class="num" onclick="addDigit(5)">5</button>
+            <button class="num" onclick="addDigit(6)">6</button>
+
+            <button class="num" onclick="addDigit(7)">7</button>
+            <button class="num" onclick="addDigit(8)">8</button>
+            <button class="num" onclick="addDigit(9)">9</button>
+
+            <button class="delete" onclick="clearCode()">C</button>
+            <button class="num" onclick="addDigit(0)">0</button>
+            <button class="action" onclick="checkCode()">✔</button>
+        </div>
+
+        <div id="error"></div>
+    </div>
+
+    <script>
+        const correctCode = "4717"; // 🔑 change ici
+        let code = "";
+
+        function addDigit(digit) {
+            if (code.length < 4) {
+                code += digit;
+                updateDisplay();
+            }
+        }
+
+        function clearCode() {
+            code = "";
+            updateDisplay();
+            document.getElementById("error").innerText = "";
+        }
+
+        function updateDisplay() {
+            document.getElementById("display").innerText =
+                code.padEnd(4, "-");
+        }
+
+        function checkCode() {
+            if (code === correctCode) {
+                window.location.href = "page-secrete.html";
+            } else {
+                document.getElementById("error").innerText = "❌ Code incorrect";
+                clearCode();
+            }
+        }
+    </script>
+
+</body>
+</html>
